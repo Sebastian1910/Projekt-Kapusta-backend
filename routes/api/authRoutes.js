@@ -10,3 +10,5 @@ router.post("/auth/register", register)
 router.post("/auth/login", login)
 router.post('/refresh-token',authMiddleware, refresh)
 router.post("/auth/logout", authMiddleware, logout)
+
+module.exports = router;
