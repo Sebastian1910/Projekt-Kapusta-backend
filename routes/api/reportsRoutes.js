@@ -13,53 +13,23 @@ require("dotenv").config();
 
 const router = express.Router();
 
-router.get(
-  "/transaction/income-categories",
-  authMiddleware,
-  async (req, res, next) => {
-    try {
-      const { authorization } = req.headers;
-      if (!authorization) {
-        return res.status(400).json({ message: "No auth" });
-      }
-      const [_bearer, token] = authorization.split(" ");
-      const decodedToken = jwt.decode(token, process.env.JWT_SECRET);
-      if (!decodedToken) {
-        return res.status(400).json({ message: "Wrong token" });
-      }
-      const user = await User.findById(decodedToken._id);
-      if (!user) {
-        return res.status(400).json({ message: "Wrong user" });
-      }
-      return res.status(200).json(incomeCategorie);
-    } catch (e) {
-      next(e);
-    }
-  }
-);
-
-router.get("/transaction/expense-categories", async (req, res, next) => {
+router.get("/income-categories", authMiddleware, async (req, res, next) => {
   try {
-    const { authorization } = req.headers;
-    if (!authorization) {
-      return res.status(400).json({ message: "No auth" });
-    }
-    const [_bearer, token] = authorization.split(" ");
-    const decodedToken = jwt.decode(token, process.env.JWT_SECRET);
-    if (!decodedToken) {
-      return res.status(400).json({ message: "Wrong token" });
-    }
-    const user = await User.findById(decodedToken._id);
-    if (!user) {
-      return res.status(400).json({ message: "Wrong user" });
-    }
+    return res.status(200).json(incomeCategorie);
+  } catch (e) {
+    next(e);
+  }
+});
+
+router.get("/expense-categories", authMiddleware, async (req, res, next) => {
+  try {
     return res.status(200).json(expenseCategorie);
   } catch (e) {
     next(e);
   }
 });
 
-router.get("/transaction/period-data", async (req, res, next) => {
+router.get("/period-data", authMiddleware, async (req, res, next) => {
   const { startDate, endDate } = req.query;
   try {
     const { transactions, balance } = await getPeriodData(startDate, endDate);
@@ -68,28 +38,16 @@ router.get("/transaction/period-data", async (req, res, next) => {
     next(e);
   }
 });
+// Work in progress
 
-router.get("/transaction/byMouths", authMiddleware, async (req, res, next) => {
-  try {
-    const { authorization } = req.headers;
-    if (!authorization) {
-      return res.status(400).json({ message: "No auth" });
-    }
-    const [_bearer, token] = authorization.split(" ");
-    const decodedToken = jwt.decode(token, process.env.JWT_SECRET);
-    if (!decodedToken) {
-      return res.status(400).json({ message: "Wrong token" });
-    }
-    const user = await User.findById(decodedToken._id);
-    if (!user) {
-      return res.status(400).json({ message: "Wrong user" });
-    }
-    const thisYear = new Date().getFullYear();
-    const trans = await Transaction.find({ userId: decodedToken._id });
-    return res.status(200).json();
-  } catch (e) {
-    next(e);
-  }
-});
+// router.get("/byMonths", authMiddleware, async (req, res, next) => {
+//   try {
+//     const thisYear = new Date().getFullYear();
+//     const trans = await Transaction.find({ userId: decodedToken._id });
+//     return res.status(200).json();
+//   } catch (e) {
+//     next(e);
+//   }
+// });
 
 module.exports = router;

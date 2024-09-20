@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const { incomeCategorie, expenseCategorie } = require("../config/categories");
 const Schema = mongoose.Schema;
 
 const TransactionSchema = new Schema({
@@ -17,6 +18,7 @@ const TransactionSchema = new Schema({
   },
   category: {
     type: String,
+    enum: [...incomeCategorie, ...expenseCategorie],
     required: [true, "Category is required"],
   },
   type: {
