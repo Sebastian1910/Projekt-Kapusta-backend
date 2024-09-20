@@ -34,6 +34,10 @@ UserSchema.methods.validatePassword = async function (password) {
   return isMatch;
 };
 
+UserSchema.methods.setToken = function (token) {
+  this.token = token;
+};
+
 const User = mongoose.model("User", UserSchema);
 
 module.exports = User;
