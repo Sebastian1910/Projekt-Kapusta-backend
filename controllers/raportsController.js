@@ -53,4 +53,19 @@ const periodData = async (req, res, next) => {
   }
 };
 
-module.exports = { incomeCategories, expenseCategories, periodData };
+const getUserFromHeaders = async (authorization) => {
+  try {
+    const [, token] = authorization.split(" ");
+    const decodedToken = await jwt.decode(token, process.env.JWT_SECRET);
+    const userId = decodedToken._id;
+    return userId;
+  } catch (e) {
+    console.log(e);
+  }
+};
+module.exports = {
+  incomeCategories,
+  expenseCategories,
+  periodData,
+  getUserFromHeaders,
+};
