@@ -6,6 +6,7 @@ const logger = require("morgan");
 const cors = require("cors");
 const authRoutes = require("./routes/api/authRoutes.js");
 const transactionRoutes = require("./routes/api/transactionRoutes.js");
+const raportsRoute = require("./routes/api/raportsRoutes.js");
 const jwtStrategy = require("./config/jwt.js");
 
 const app = express();
@@ -25,6 +26,7 @@ jwtStrategy();
 
 app.use("/api", authRoutes);
 app.use("/api", transactionRoutes);
+app.use("/api", raportsRoute);
 
 app.use((_req, res) => {
   res.status(404).json({ message: "Not Found" });
