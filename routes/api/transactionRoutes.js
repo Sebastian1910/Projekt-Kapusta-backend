@@ -8,11 +8,13 @@ const {
   getExpense,
   deleteTransaction,
   summary,
+  getAllTransactions,
 } = require("../../controllers/transactionController.js");
 
 dotenv.config();
 const router = express.Router();
 
+router.post("/transaction/all", authMiddleware, getAllTransactions);
 router.post("/transaction/income", authMiddleware, postIncome);
 router.get("/transaction/income", authMiddleware, getIncome);
 router.post("/transaction/expense", authMiddleware, postExpense);

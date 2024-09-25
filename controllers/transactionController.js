@@ -68,6 +68,23 @@ const getIncome = async (req, res, next) => {
   }
 };
 
+const getAllTransactions = async (req, res, next) => {
+  try {
+    const transactions = await Transaction.find({
+      userId: req.user._id,
+    });
+
+    return res.status(200).json({
+      status: "200 OK",
+      code: 200,
+      transactions,
+    });
+  } catch (error) {
+    console.error(`Error fetching transactions stats: ${error.message}`);
+    next(error);
+  }
+};
+
 const postExpense = async (req, res, next) => {
   const { amount, category, description, date } = req.body;
 
@@ -215,6 +232,7 @@ const summary = async (req, res, next) => {
 
 module.exports = {
   postIncome,
+  getAllTransactions,
   getIncome,
   postExpense,
   getExpense,
