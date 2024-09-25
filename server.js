@@ -11,10 +11,7 @@ if (!dataBaseUrl) {
 }
 
 mongoose
-  .connect(dataBaseUrl, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-  })
+  .connect(dataBaseUrl, {})
   .then(() => {
     console.log("Database connection successful".yellow);
     app.listen(port, () => {
