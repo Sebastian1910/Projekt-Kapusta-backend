@@ -5,6 +5,7 @@ const {
   expenseCategorie,
 } = require("../config/categories.js");
 
+// Dodanie dochodu
 const postIncome = async (req, res, next) => {
   const { amount, category, description, date } = req.body;
 
@@ -43,10 +44,15 @@ const postIncome = async (req, res, next) => {
     });
   } catch (error) {
     console.error(`Error creating transaction: ${error.message}`);
-    next(error);
+    return res.status(500).json({
+      status: "error",
+      code: 500,
+      message: "Server error",
+    });
   }
 };
 
+// Pobranie wszystkich dochodów
 const getIncome = async (req, res, next) => {
   try {
     const incomes = await Transaction.find({
@@ -64,10 +70,15 @@ const getIncome = async (req, res, next) => {
     });
   } catch (error) {
     console.error(`Error fetching income stats: ${error.message}`);
-    next(error);
+    return res.status(500).json({
+      status: "error",
+      code: 500,
+      message: "Server error",
+    });
   }
 };
 
+// Dodanie wydatku
 const postExpense = async (req, res, next) => {
   const { amount, category, description, date } = req.body;
 
@@ -106,10 +117,15 @@ const postExpense = async (req, res, next) => {
     });
   } catch (error) {
     console.error(`Error creating transaction: ${error.message}`);
-    next(error);
+    return res.status(500).json({
+      status: "error",
+      code: 500,
+      message: "Server error",
+    });
   }
 };
 
+// Pobranie wszystkich wydatków
 const getExpense = async (req, res, next) => {
   try {
     const expenses = await Transaction.find({
@@ -125,15 +141,42 @@ const getExpense = async (req, res, next) => {
     return res.status(200).json({
       status: "200 OK",
       code: 200,
-      totalIncome: totalExpense,
+      totalExpense,
       transactions: expenses,
     });
   } catch (error) {
-    console.error(`Error fetching income stats: ${error.message}`);
-    next(error);
+    console.error(`Error fetching expense stats: ${error.message}`);
+    return res.status(500).json({
+      status: "error",
+      code: 500,
+      message: "Server error",
+    });
   }
 };
 
+// Pobranie wszystkich transakcji (zarówno dochodów, jak i wydatków)
+const getTransactions = async (req, res, next) => {
+  try {
+    const transactions = await Transaction.find({
+      userId: req.user._id,
+    }).lean();
+
+    return res.status(200).json({
+      status: "200 OK",
+      code: 200,
+      transactions,
+    });
+  } catch (error) {
+    console.error(`Error fetching transactions: ${error.message}`);
+    return res.status(500).json({
+      status: "error",
+      code: 500,
+      message: "Server error",
+    });
+  }
+};
+
+// Usunięcie transakcji
 const deleteTransaction = async (req, res, next) => {
   const { id } = req.params;
 
@@ -159,10 +202,15 @@ const deleteTransaction = async (req, res, next) => {
     });
   } catch (error) {
     console.error(`Error deleting transaction: ${error.message}`);
-    next(error);
+    return res.status(500).json({
+      status: "error",
+      code: 500,
+      message: "Server error",
+    });
   }
 };
 
+// Podsumowanie transakcji
 const summary = async (req, res, next) => {
   const currentYear = new Date().getFullYear();
   const { type } = req.query;
@@ -209,7 +257,11 @@ const summary = async (req, res, next) => {
     });
   } catch (error) {
     console.error(`Error generating summary: ${error.message}`);
-    next(error);
+    return res.status(500).json({
+      status: "error",
+      code: 500,
+      message: "Server error",
+    });
   }
 };
 
@@ -220,4 +272,5 @@ module.exports = {
   getExpense,
   deleteTransaction,
   summary,
+  getTransactions,
 };

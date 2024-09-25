@@ -8,16 +8,37 @@ const {
   getExpense,
   deleteTransaction,
   summary,
+  getTransactions, // Dodana funkcja pobierania wszystkich transakcji
 } = require("../../controllers/transactionController.js");
 
 dotenv.config();
 const router = express.Router();
 
-router.post("/transaction/income", authMiddleware, postIncome);
+// Dodanie transakcji (dochód lub wydatek)
+router.post("/transaction", authMiddleware, (req, res, next) => {
+  const { type } = req.body;
+  if (type === "income") {
+    return postIncome(req, res, next);
+  } else if (type === "expense") {
+    return postExpense(req, res, next);
+  } else {
+    return res.status(400).json({ message: "Invalid transaction type" });
+  }
+});
+
+// Pobranie wszystkich transakcji dla zalogowanego użytkownika
+router.get("/transaction", authMiddleware, getTransactions);
+
+// Pobranie dochodów
 router.get("/transaction/income", authMiddleware, getIncome);
-router.post("/transaction/expense", authMiddleware, postExpense);
+
+// Pobranie wydatków
 router.get("/transaction/expense", authMiddleware, getExpense);
+
+// Usunięcie transakcji
 router.delete("/transaction/:id", authMiddleware, deleteTransaction);
+
+// Podsumowanie transakcji
 router.get("/transaction/summary", authMiddleware, summary);
 
 module.exports = router;

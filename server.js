@@ -1,12 +1,20 @@
 const mongoose = require("mongoose");
 const app = require("./app.js");
 require("colors");
-
-const port = process.env.PORT || 3000;
+require("dotenv").config(); //
+const port = process.env.PORT || 5000;
 const dataBaseUrl = process.env.DATABASE_URL;
 
+if (!dataBaseUrl) {
+  console.error("No database URL found in environment variables.".red);
+  process.exit(1);
+}
+
 mongoose
-  .connect(dataBaseUrl)
+  .connect(dataBaseUrl, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  })
   .then(() => {
     console.log("Database connection successful".yellow);
     app.listen(port, () => {
@@ -14,6 +22,6 @@ mongoose
     });
   })
   .catch((error) => {
-    console.log("MongoDB connection error. " + error);
+    console.error("MongoDB connection error: ".red + error.message);
     process.exit(1);
   });
