@@ -21,6 +21,7 @@ app.use(cors());
 app.use(helmet());
 app.use(cookieParser());
 app.use(logger(loggerFormats));
+app.use("/api", raportsRoute);
 
 jwtStrategy();
 

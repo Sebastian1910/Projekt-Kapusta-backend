@@ -1,4 +1,5 @@
 const express = require("express");
+const { fetchReports } = require("../../controllers/raportsController");
 const authMiddleware = require("../../middleware/authMiddleware.js");
 const mongoose = require("mongoose");
 const {
@@ -13,6 +14,7 @@ const { validationResult } = require("express-validator");
 const router = express.Router();
 
 // Trasy dla kategorii
+router.get("/reports", authMiddleware, fetchReports);
 router.get("/income-categories", authMiddleware, incomeCategories);
 router.get("/expense-categories", authMiddleware, expenseCategories);
 router.get("/period-data", authMiddleware, periodData);
