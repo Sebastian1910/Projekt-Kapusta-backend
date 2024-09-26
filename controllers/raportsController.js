@@ -4,15 +4,6 @@ const {
   expenseCategorie,
 } = require("../config/categories.js");
 
-// Expenses
-const getFullCategory = async (category) => {
-  try {
-    const categories = await Transaction.find();
-  } catch (e) {
-    console.log(e);
-  }
-};
-// Amount by date
 const getPeriodData = async (startDate, endDate) => {
   try {
     const transactions = await Transaction.find({

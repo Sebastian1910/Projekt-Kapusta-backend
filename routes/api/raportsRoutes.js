@@ -1,6 +1,6 @@
 const express = require("express");
 const authMiddleware = require("../../middleware/authMiddleware.js");
-
+const mongoose = require("mongoose");
 const {
   periodData,
   incomeCategories,
@@ -12,12 +12,12 @@ const { validationResult } = require("express-validator");
 
 const router = express.Router();
 
+// Trasy dla kategorii
 router.get("/income-categories", authMiddleware, incomeCategories);
 router.get("/expense-categories", authMiddleware, expenseCategories);
 router.get("/period-data", authMiddleware, periodData);
 
-//Komentarz Wojtka
-
+// Trasa do miesięcznego podsumowania wydatków
 router.get(
   "/expenses/monthly-summary",
   authMiddleware,
@@ -28,7 +28,7 @@ router.get(
       const expenses = await Transaction.aggregate([
         {
           $match: {
-            user: mongoose.Types.ObjectId(req.user._id),
+            user: new mongoose.Types.ObjectId(req.user._id),
             type: "expense",
             date: {
               $gte: new Date(`${currentYear}-01-01`),
@@ -57,11 +57,13 @@ router.get(
         expenses: monthlyExpenses,
       });
     } catch (error) {
+      console.error("Error fetching monthly expenses summary:", error);
       next(error);
     }
   }
 );
 
+// Trasa do miesięcznego podsumowania dochodów
 router.get(
   "/incomes/monthly-summary",
   authMiddleware,
@@ -72,7 +74,7 @@ router.get(
       const incomes = await Transaction.aggregate([
         {
           $match: {
-            user: mongoose.Types.ObjectId(req.user._id),
+            user: new mongoose.Types.ObjectId(req.user._id),
             type: "income",
             date: {
               $gte: new Date(`${currentYear}-01-01`),
@@ -101,11 +103,13 @@ router.get(
         incomes: monthlyIncomes,
       });
     } catch (error) {
+      console.error("Error fetching monthly incomes summary:", error);
       next(error);
     }
   }
 );
 
+// Trasa do podsumowania według roku i miesiąca
 router.get("/summary/:year/:month", authMiddleware, async (req, res, next) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
@@ -127,7 +131,7 @@ router.get("/summary/:year/:month", authMiddleware, async (req, res, next) => {
     const expenses = await Transaction.aggregate([
       {
         $match: {
-          user: mongoose.Types.ObjectId(req.user._id),
+          user: new mongoose.Types.ObjectId(req.user._id),
           type: "expense",
           date: {
             $gte: startDate,
@@ -149,7 +153,7 @@ router.get("/summary/:year/:month", authMiddleware, async (req, res, next) => {
     const incomes = await Transaction.aggregate([
       {
         $match: {
-          user: mongoose.Types.ObjectId(req.user._id),
+          user: new mongoose.Types.ObjectId(req.user._id),
           type: "income",
           date: {
             $gte: startDate,
@@ -175,6 +179,7 @@ router.get("/summary/:year/:month", authMiddleware, async (req, res, next) => {
       incomes,
     });
   } catch (error) {
+    console.error("Error fetching summary:", error);
     next(error);
   }
 });

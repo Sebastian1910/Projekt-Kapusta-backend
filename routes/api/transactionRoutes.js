@@ -8,7 +8,7 @@ const {
   getExpense,
   deleteTransaction,
   summary,
-  getTransactions, // Dodana funkcja pobierania wszystkich transakcji
+  getTransactions,
 } = require("../../controllers/transactionController.js");
 
 dotenv.config();
