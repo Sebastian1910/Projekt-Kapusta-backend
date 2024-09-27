@@ -58,7 +58,7 @@ const getUserFromHeaders = async (authorization) => {
 // Funkcja agregująca dane raportów z bazy
 const getReportsFromDatabase = async (year, month) => {
   const startDate = new Date(year, month - 1, 1);
-  const endDate = new Date(year, month, 0); // Ostatni dzień miesiąca
+  const endDate = new Date(year, month, 0); 
 
   try {
     // Pobieramy transakcje w danym miesiącu
