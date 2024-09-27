@@ -33,19 +33,3 @@ const TransactionSchema = new Schema({
 const Transaction = mongoose.model("Transaction", TransactionSchema);
 
 module.exports = Transaction;
-
-// summary: {
-//   type: {
-//     totalAmount: Number,
-//     lastFewMonths: [
-//       {
-//         month: String,
-//         totalAmount: Number,
-//       },
-//     ],
-//   },
-//   default: {
-//     totalAmount: 0,
-//     lastFewMonths: [],
-//   },
-// },
