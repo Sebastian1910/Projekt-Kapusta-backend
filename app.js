@@ -11,18 +11,16 @@ const jwtStrategy = require("./config/jwt.js");
 
 const app = express();
 
-// Załaduj zmienne środowiskowe
 dotenv.config();
 
-// Ustaw format loggera w zależności od środowiska
 const loggerFormats = app.get("env") === "development" ? "dev" : "short";
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// Konfiguracja CORS
 const allowedOrigins = [
   "http://localhost:5173",
+  "https://projekt-kapusta-frontend.vercel.app",
   "https://projekt-kapusta-backend.vercel.app",
 ];
 
@@ -35,38 +33,30 @@ app.use(
         callback(new Error("Not allowed by CORS"));
       }
     },
-    methods: "GET,POST,PUT,DELETE,OPTIONS", // Dodaj 'OPTIONS' do metod
-    allowedHeaders: ["Content-Type", "Authorization"], // Upewnij się, że nagłówki są dozwolone
+    methods: "GET,POST,PUT,DELETE,OPTIONS",
+    allowedHeaders: ["Content-Type", "Authorization"],
     credentials: true,
   })
 );
 
-// Obsługa preflight requests
-app.options("*", cors()); // Obsługuj wszystkie preflight requests
+app.options("*", cors());
 
-// Zabezpieczenia Helmet
 app.use(helmet());
 
-// Obsługa ciasteczek
 app.use(cookieParser());
 
-// Logger dla aplikacji
 app.use(logger(loggerFormats));
 
-// Konfiguracja JWT
 jwtStrategy();
 
-// Trasy API
-app.use("/api", authRoutes);
-app.use("/api", transactionRoutes);
-app.use("/api", raportsRoute);
+app.use("/api/auth", authRoutes);
+app.use("/api/transactions", transactionRoutes);
+app.use("/api/reports", raportsRoute);
 
-// Obsługa trasy 404
 app.use((_req, res) => {
   res.status(404).json({ message: "Not Found" });
 });
 
-// Middleware do obsługi błędów
 app.use((err, _req, res, next) => {
   res.status(500).json({
     message: err.message,
