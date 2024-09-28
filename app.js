@@ -18,7 +18,10 @@ const loggerFormats = app.get("env") === "development" ? "dev" : "short";
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-const allowedOrigins = ["http://localhost:5173", "https://twojadomena.com"];
+const allowedOrigins = [
+  "http://localhost:5173",
+  "https://projekt-kapusta-backend.vercel.app",
+];
 app.use(
   cors({
     origin: function (origin, callback) {
