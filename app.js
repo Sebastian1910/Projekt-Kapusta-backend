@@ -17,11 +17,25 @@ const loggerFormats = app.get("env") === "development" ? "dev" : "short";
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(cors());
+
+const allowedOrigins = ["http://localhost:5173", "https://twojadomena.com"];
+app.use(
+  cors({
+    origin: function (origin, callback) {
+      if (!origin || allowedOrigins.indexOf(origin) !== -1) {
+        callback(null, true);
+      } else {
+        callback(new Error("Not allowed by CORS"));
+      }
+    },
+    methods: "GET,POST,PUT,DELETE",
+    credentials: true,
+  })
+);
+
 app.use(helmet());
 app.use(cookieParser());
 app.use(logger(loggerFormats));
-app.use("/api", raportsRoute);
 
 jwtStrategy();
 
@@ -33,7 +47,7 @@ app.use((_req, res) => {
   res.status(404).json({ message: "Not Found" });
 });
 
-app.use((err, _req, res) => {
+app.use((err, _req, res, next) => {
   res.status(500).json({
     message: err.message,
   });
