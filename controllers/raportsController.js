@@ -47,7 +47,7 @@ const periodData = async (req, res, next) => {
 const getUserFromHeaders = async (authorization) => {
   try {
     const [, token] = authorization.split(" ");
-    const decodedToken = jwt.decode(token, process.env.JWT_SECRET);
+    const decodedToken = jwt.decode(token, process.env.SECRET);
     const userId = decodedToken._id;
     return userId;
   } catch (e) {
@@ -58,7 +58,9 @@ const getUserFromHeaders = async (authorization) => {
 // Funkcja agregująca dane raportów z bazy
 const getReportsFromDatabase = async (year, month) => {
   const startDate = new Date(year, month - 1, 1);
-  const endDate = new Date(year, month, 0); 
+  const endDate = new Date(year, month, 0);
+
+  endDate.setHours(23, 59, 59, 999);
 
   try {
     // Pobieramy transakcje w danym miesiącu

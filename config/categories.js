@@ -1,4 +1,4 @@
-const incomeCategorie = ["Salary", "Additional Income"];
+const incomeCategorie = ["Salary", "Add Income"];
 const expenseCategorie = [
   "Products",
   "Alcohol",
