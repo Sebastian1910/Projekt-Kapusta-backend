@@ -1,5 +1,4 @@
 const express = require("express");
-const dotenv = require("dotenv");
 const authMiddleware = require("../../middleware/authMiddleware.js").default;
 const {
   postIncome,
@@ -11,7 +10,6 @@ const {
   getTransactions,
 } = require("../../controllers/transactionController.js").default;
 
-dotenv.config();
 const router = express.Router();
 
 // Dodanie transakcji (dochód lub wydatek)

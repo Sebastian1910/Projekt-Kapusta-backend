@@ -18,6 +18,7 @@ const loggerFormats = app.get("env") === "development" ? "dev" : "short";
 const allowedOrigins = [
   "http://localhost:5173",
   "https://projekt-kapusta-frontend.vercel.app",
+  "https://projekt-kapusta-backend.vercel.app", // Dodany backend vercel jako dopuszczalny origin
 ];
 
 const corsOptions = {
@@ -29,10 +30,12 @@ const corsOptions = {
     }
   },
   methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+  allowedHeaders: ["Content-Type", "Authorization"],
   credentials: true,
 };
+
 app.use(cors(corsOptions));
-app.options("/api/login", cors(corsOptions));
+app.options("/api/*", cors(corsOptions)); // Obsługa zapytań preflight CORS
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -49,15 +52,17 @@ app.use("/api", authRoutes);
 app.use("/api", transactionRoutes);
 app.use("/api", raportsRoute);
 
+// Obsługa błędów 404
 app.use((_req, res) => {
   res.status(404).json({ message: "Not Found" });
 });
 
+// Globalna obsługa błędów
 app.use((err, _req, res, next) => {
+  console.error("Error:", err.message);
   res.status(500).json({
     message: err.message,
   });
 });
 
 module.exports = app;
-// DDD
