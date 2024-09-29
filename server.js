@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 const app = require("./app.js");
 require("colors");
-require("dotenv").config(); //
+require("dotenv").config();
 const port = process.env.PORT || 5000;
 const dataBaseUrl = process.env.DATABASE_URL;
 

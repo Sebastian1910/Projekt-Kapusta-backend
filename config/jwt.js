@@ -8,6 +8,7 @@ function setJwtStrategy() {
     secretOrKey: secret,
     jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
   };
+
   passport.use(
     new JWTStrategy(params, async function (payload, done) {
       try {

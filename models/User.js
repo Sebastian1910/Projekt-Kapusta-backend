@@ -1,8 +1,7 @@
 const mongoose = require("mongoose");
-const Schema = mongoose.Schema;
 const bcrypt = require("bcrypt");
 
-const UserSchema = new Schema({
+const UserSchema = new mongoose.Schema({
   username: {
     type: String,
     minlength: [2, "Username must be at least 2 characters long"],
@@ -10,19 +9,11 @@ const UserSchema = new Schema({
   },
   password: {
     type: String,
-    required: [true, "Password is require"],
+    required: true,
     minlength: [6, "Password must be at least 6 characters long"],
   },
-  email: {
-    type: String,
-    required: [true, "Email is require"],
-    unique: true,
-    match: [/.+@.+\..+/, "Please enter a valid email address"],
-  },
-  token: {
-    type: String,
-    default: null,
-  },
+  email: { type: String, required: true, unique: true },
+  token: { type: String, default: null },
 });
 
 UserSchema.methods.setPassword = async function (password) {
@@ -30,8 +21,7 @@ UserSchema.methods.setPassword = async function (password) {
 };
 
 UserSchema.methods.validatePassword = async function (password) {
-  const isMatch = await bcrypt.compare(password, this.password);
-  return isMatch;
+  return await bcrypt.compare(password, this.password);
 };
 
 UserSchema.methods.setToken = function (token) {

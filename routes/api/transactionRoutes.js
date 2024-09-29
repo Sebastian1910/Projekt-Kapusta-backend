@@ -1,6 +1,4 @@
 const express = require("express");
-const dotenv = require("dotenv");
-const authMiddleware = require("../../middleware/authMiddleware.js").default;
 const {
   postIncome,
   getIncome,
@@ -10,11 +8,10 @@ const {
   summary,
   getTransactions,
 } = require("../../controllers/transactionController.js");
+const authMiddleware = require("../../middleware/authMiddleware.js");
 
-dotenv.config();
 const router = express.Router();
 
-// Dodanie transakcji (dochód lub wydatek)
 router.post("/transaction", authMiddleware, (req, res, next) => {
   const { type } = req.body;
   if (type === "income") {
@@ -26,19 +23,10 @@ router.post("/transaction", authMiddleware, (req, res, next) => {
   }
 });
 
-// Pobranie wszystkich transakcji dla zalogowanego użytkownika
 router.get("/transaction", authMiddleware, getTransactions);
-
-// Pobranie dochodów
 router.get("/transaction/income", authMiddleware, getIncome);
-
-// Pobranie wydatków
 router.get("/transaction/expense", authMiddleware, getExpense);
-
-// Usunięcie transakcji
 router.delete("/transaction/:id", authMiddleware, deleteTransaction);
-
-// Podsumowanie transakcji
 router.get("/summary", authMiddleware, summary);
 
 module.exports = router;

@@ -4,9 +4,7 @@ const Joi = require("joi");
 
 const schemaLogin = Joi.object({
   username: Joi.string(),
-  password: Joi.string()
-    // .regex(/^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*\W)(?!.* ).{10,20}$/)
-    .required(),
+  password: Joi.string().required(),
   email: Joi.string()
     .email({ minDomainSegments: 2, tlds: { allow: ["com", "net", "pl"] } })
     .required(),
@@ -35,26 +33,18 @@ const register = async (req, res, next) => {
   }
 
   try {
-    const newUser = new User({
-      username,
-      email,
-    });
-
-    await newUser.password(password);
+    const newUser = new User({ username, email });
+    await newUser.setPassword(password);
     await newUser.save();
 
     return res.status(201).json({
       status: "201 Created",
       code: 201,
       message: "Registration successfull",
-      user: {
-        email: newUser.email,
-      },
+      user: { email: newUser.email },
     });
   } catch (error) {
-    console.error(
-      `Błąd podczas rejestracji nowego użytkownika: ${error.message}`
-    );
+    console.error(`Error during registration: ${error.message}`);
     next(error);
   }
 };
@@ -166,9 +156,4 @@ const logout = async (req, res, next) => {
   }
 };
 
-module.exports = {
-  register,
-  login,
-  refresh,
-  logout,
-};
+module.exports = { register, login, refresh, logout };

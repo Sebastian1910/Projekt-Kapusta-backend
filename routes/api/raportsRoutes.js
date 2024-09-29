@@ -1,24 +1,18 @@
 const express = require("express");
-const { fetchReports } = require("../../controllers/raportsController");
-const authMiddleware = require("../../middleware/authMiddleware.js");
-const mongoose = require("mongoose");
 const {
-  periodData,
+  fetchReports,
   incomeCategories,
   expenseCategories,
-  getUserFromHeaders,
+  periodData,
 } = require("../../controllers/raportsController.js");
-const Transaction = require("../../models/Transaction.js");
-const { validationResult } = require("express-validator");
+const authMiddleware = require("../../middleware/authMiddleware.js");
 
 const router = express.Router();
 
-// Trasy dla kategorii
 router.get("/reports", authMiddleware, fetchReports);
 router.get("/income-categories", authMiddleware, incomeCategories);
 router.get("/expense-categories", authMiddleware, expenseCategories);
 router.get("/period-data", authMiddleware, periodData);
-
 // Trasa do miesięcznego podsumowania wydatków
 router.get(
   "/expenses/monthly-summary",
