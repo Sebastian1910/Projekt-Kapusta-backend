@@ -1,5 +1,5 @@
 const passport = require("passport");
-const User = require("../models/user.js");
+const User = require("../models/User.js");
 
 const authMiddleware = (req, res, next) => {
   passport.authenticate("jwt", { session: false }, async (error, user) => {
