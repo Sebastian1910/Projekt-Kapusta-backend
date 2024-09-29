@@ -15,10 +15,17 @@ dotenv.config();
 
 const loggerFormats = app.get("env") === "development" ? "dev" : "short";
 
+const corsOptions = {
+  origin: "https://projekt-kapusta-frontend.vercel.app",
+  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+  allowedHeaders: ["Content-Type", "Authorization"],
+  credentials: true,
+};
+
+app.use(cors(corsOptions)); // Używamy CORS z określonymi opcjami
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-
-app.use(cors());
 
 app.use(helmet());
 
