@@ -33,8 +33,8 @@ app.use(
         callback(new Error("Not allowed by CORS"));
       }
     },
-    methods: "GET,POST,PUT,DELETE,OPTIONS",
-    allowedHeaders: ["Content-Type", "Authorization"],
+    methods: "GET,POST,PUT,DELETE,OPTIONS", // Dodaj 'OPTIONS' do metod
+    allowedHeaders: ["Content-Type", "Authorization"], // Upewnij się, że nagłówki są dozwolone
     credentials: true,
   })
 );
@@ -49,9 +49,9 @@ app.use(logger(loggerFormats));
 
 jwtStrategy();
 
-app.use("/api/auth", authRoutes);
-app.use("/api/transactions", transactionRoutes);
-app.use("/api/reports", raportsRoute);
+app.use("/api", authRoutes);
+app.use("/api", transactionRoutes);
+app.use("/api", raportsRoute);
 
 app.use((_req, res) => {
   res.status(404).json({ message: "Not Found" });
