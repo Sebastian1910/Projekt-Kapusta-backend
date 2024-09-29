@@ -24,21 +24,7 @@ const allowedOrigins = [
   "https://projekt-kapusta-backend.vercel.app",
 ];
 
-app.use(
-  cors({
-    origin: function (origin, callback) {
-      console.log("Origin:", origin);
-      if (!origin || allowedOrigins.includes(origin)) {
-        callback(null, true);
-      } else {
-        callback(new Error("Not allowed by CORS"));
-      }
-    },
-    methods: "GET,POST,PUT,DELETE,OPTIONS", // Dodaj 'OPTIONS' do metod
-    allowedHeaders: ["Content-Type", "Authorization"], // Upewnij się, że nagłówki są dozwolone
-    credentials: true,
-  })
-);
+app.use(cors({}));
 
 app.options("*", cors());
 
