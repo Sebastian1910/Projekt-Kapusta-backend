@@ -39,6 +39,6 @@ router.get("/transaction/expense", authMiddleware, getExpense);
 router.delete("/transaction/:id", authMiddleware, deleteTransaction);
 
 // Podsumowanie transakcji
-router.get("/transaction/summary", authMiddleware, summary);
+router.get("/summary", authMiddleware, summary);
 
 module.exports = router;
