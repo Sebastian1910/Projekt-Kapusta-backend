@@ -40,7 +40,7 @@ const register = async (req, res, next) => {
       email,
     });
 
-    await newUser.setPassword(password);
+    await newUser.password(password);
     await newUser.save();
 
     return res.status(201).json({
