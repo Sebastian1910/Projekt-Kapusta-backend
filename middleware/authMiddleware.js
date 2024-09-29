@@ -2,6 +2,8 @@ const passport = require("passport");
 const User = require("../models/User.js");
 
 const authMiddleware = (req, res, next) => {
+  console.log("Authorization Header:", req.header("Authorization")); // Dodaj to, żeby zobaczyć nagłówek
+
   passport.authenticate("jwt", { session: false }, async (error, user) => {
     if (!user || error) {
       return res.status(401).json({
@@ -10,21 +12,10 @@ const authMiddleware = (req, res, next) => {
         message: "Not authorized",
       });
     }
+
     try {
-      const authHeader = req.header("Authorization");
-
-      // Sprawdź, czy nagłówek Authorization istnieje i jest poprawnie sformatowany
-      if (!authHeader || !authHeader.startsWith("Bearer ")) {
-        return res.status(401).json({
-          status: "401 Unauthorized",
-          code: 401,
-          message: "Token is missing or invalid format",
-        });
-      }
-
-      const token = authHeader.replace("Bearer ", "");
-
-      // Sprawdź, czy token jest zgodny z tokenem użytkownika w bazie danych
+      const token = req.header("Authorization").replace("Bearer ", "");
+      console.log("Token:", token); // Dodaj to, żeby sprawdzić token
       const isUser = await User.findOne({
         _id: user._id,
         token: token,
@@ -38,7 +29,6 @@ const authMiddleware = (req, res, next) => {
         });
       }
 
-      // Przypisz użytkownika do req
       req.user = isUser;
       next();
     } catch (error) {
