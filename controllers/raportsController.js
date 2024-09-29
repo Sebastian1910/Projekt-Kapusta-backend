@@ -1,4 +1,4 @@
-const Transaction = require("../models/Transaction").default;
+const Transaction = require("../models/Transaction");
 const {
   incomeCategorie,
   expenseCategorie,

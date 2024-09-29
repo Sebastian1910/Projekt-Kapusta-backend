@@ -1,6 +1,6 @@
 const express = require("express");
 const { fetchReports } = require("../../controllers/raportsController");
-const authMiddleware = require("../../middleware/authMiddleware.js").default;
+const authMiddleware = require("../../middleware/authMiddleware.js");
 const mongoose = require("mongoose");
 const {
   periodData,
@@ -8,7 +8,7 @@ const {
   expenseCategories,
   getUserFromHeaders,
 } = require("../../controllers/raportsController.js");
-const Transaction = require("../../models/Transaction.js").default;
+const Transaction = require("../../models/Transaction.js");
 const { validationResult } = require("express-validator");
 
 const router = express.Router();

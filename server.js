@@ -1,8 +1,7 @@
 const mongoose = require("mongoose");
 const app = require("./app.js");
 require("colors");
-require("dotenv").config();
-
+require("dotenv").config(); //
 const port = process.env.PORT || 5000;
 const dataBaseUrl = process.env.DATABASE_URL;
 
@@ -12,10 +11,7 @@ if (!dataBaseUrl) {
 }
 
 mongoose
-  .connect(dataBaseUrl, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true, // Opcje MongoDB
-  })
+  .connect(dataBaseUrl, {})
   .then(() => {
     console.log("Database connection successful".yellow);
     app.listen(port, () => {

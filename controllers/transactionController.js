@@ -1,9 +1,12 @@
-import Transaction from "../models/Transaction.js";
-import { getMonthYear, monthNames } from "../config/date.js";
-import { incomeCategorie, expenseCategorie } from "../config/categories.js";
+const Transaction = require("../models/Transaction.js").default;
+const { getMonthYear, monthNames } = require("../config/date.js");
+const {
+  incomeCategorie,
+  expenseCategorie,
+} = require("../config/categories.js");
 
 // Dodanie dochodu
-const postIncome = async (req, res, _next) => {
+const postIncome = async (req, res, next) => {
   const { amount, category, description, date } = req.body;
 
   if (!incomeCategorie.includes(category)) {
@@ -50,7 +53,7 @@ const postIncome = async (req, res, _next) => {
 };
 
 // Pobranie wszystkich dochodów
-const getIncome = async (req, res, _next) => {
+const getIncome = async (req, res, next) => {
   try {
     const incomes = await Transaction.find({
       userId: req.user._id,
@@ -76,7 +79,7 @@ const getIncome = async (req, res, _next) => {
 };
 
 // Dodanie wydatku
-const postExpense = async (req, res, _next) => {
+const postExpense = async (req, res, next) => {
   const { amount, category, description, date } = req.body;
 
   if (!expenseCategorie.includes(category)) {
@@ -123,7 +126,7 @@ const postExpense = async (req, res, _next) => {
 };
 
 // Pobranie wszystkich wydatków
-const getExpense = async (req, res, _next) => {
+const getExpense = async (req, res, next) => {
   try {
     const expenses = await Transaction.find({
       userId: req.user._id,
@@ -152,7 +155,7 @@ const getExpense = async (req, res, _next) => {
 };
 
 // Pobranie wszystkich transakcji (zarówno dochodów, jak i wydatków)
-const getTransactions = async (req, res, _next) => {
+const getTransactions = async (req, res, next) => {
   try {
     const transactions = await Transaction.find({
       userId: req.user._id,
@@ -174,7 +177,7 @@ const getTransactions = async (req, res, _next) => {
 };
 
 // Usunięcie transakcji
-const deleteTransaction = async (req, res, _next) => {
+const deleteTransaction = async (req, res, next) => {
   const { id } = req.params;
 
   try {
@@ -208,7 +211,7 @@ const deleteTransaction = async (req, res, _next) => {
 };
 
 // Podsumowanie transakcji
-const summary = async (req, res, _next) => {
+const summary = async (req, res, next) => {
   const currentYear = new Date().getFullYear();
   const { type } = req.query;
 
@@ -262,7 +265,7 @@ const summary = async (req, res, _next) => {
   }
 };
 
-export default {
+module.exports = {
   postIncome,
   getIncome,
   postExpense,
