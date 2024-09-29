@@ -23,6 +23,10 @@ const authMiddleware = (req, res, next) => {
 
       const isUser = await User.findOne({ _id: user._id, token: token });
 
+      if (!token) {
+        return res.status(401).json({ message: "Missing or invalid token" });
+      }
+
       if (!isUser) {
         console.error("Token is not valid for user");
         return res.status(401).json({
