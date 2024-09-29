@@ -1,8 +1,6 @@
 const Transaction = require("../models/Transaction").default;
-const {
-  incomeCategorie,
-  expenseCategorie,
-} = require("../config/categories.js");
+const { incomeCategorie, expenseCategorie } =
+  require("../config/categories.js").default;
 
 const getPeriodData = async (startDate, endDate) => {
   try {

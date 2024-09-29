@@ -18,4 +18,4 @@ const monthNames = [
   "December",
 ];
 
-module.exports = { getMonthYear, monthNames };
+export default { getMonthYear, monthNames };

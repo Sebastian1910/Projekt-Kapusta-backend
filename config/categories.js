@@ -13,4 +13,4 @@ const expenseCategorie = [
   "Other",
 ];
 
-module.exports = { incomeCategorie, expenseCategorie };
+export default { incomeCategorie, expenseCategorie };
