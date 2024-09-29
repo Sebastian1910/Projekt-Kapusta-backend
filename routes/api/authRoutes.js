@@ -1,6 +1,6 @@
 const express = require("express");
 const dotenv = require("dotenv");
-const authMiddleware = require("../../middleware/authMiddleware.js");
+const authMiddleware = require("../../middleware/authMiddleware.js").default;
 const {
   register,
   login,

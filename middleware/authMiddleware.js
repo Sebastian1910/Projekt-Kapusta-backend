@@ -1,8 +1,8 @@
-const passport = require("passport");
-const User = require("../models/User.js");
+import { authenticate } from "passport";
+import { findOne } from "../models/User.js";
 
 const authMiddleware = (req, res, next) => {
-  passport.authenticate("jwt", { session: false }, async (error, user) => {
+  authenticate("jwt", { session: false }, async (error, user) => {
     if (!user || error) {
       return res.status(401).json({
         status: "401 Unauthorized",
@@ -12,7 +12,7 @@ const authMiddleware = (req, res, next) => {
     }
     try {
       const token = req.header("Authorization").replace("Bearer ", "");
-      const isUser = await User.findOne({
+      const isUser = await findOne({
         _id: user._id,
         token: token,
       });
@@ -36,4 +36,4 @@ const authMiddleware = (req, res, next) => {
   })(req, res, next);
 };
 
-module.exports = authMiddleware;
+export default authMiddleware;

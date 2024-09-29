@@ -1,6 +1,6 @@
 const express = require("express");
 const dotenv = require("dotenv");
-const authMiddleware = require("../../middleware/authMiddleware.js");
+const authMiddleware = require("../../middleware/authMiddleware.js").default;
 const {
   postIncome,
   getIncome,
@@ -9,7 +9,7 @@ const {
   deleteTransaction,
   summary,
   getTransactions,
-} = require("../../controllers/transactionController.js");
+} = require("../../controllers/transactionController.js").default;
 
 dotenv.config();
 const router = express.Router();
