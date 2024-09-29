@@ -8,7 +8,7 @@ const {
   expenseCategories,
   getUserFromHeaders,
 } = require("../../controllers/raportsController.js");
-const Transaction = require("../../models/Transaction.js");
+const Transaction = require("../../models/Transaction.js").default;
 const { validationResult } = require("express-validator");
 
 const router = express.Router();

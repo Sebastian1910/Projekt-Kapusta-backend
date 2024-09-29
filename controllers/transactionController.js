@@ -1,4 +1,4 @@
-const Transaction = require("../models/Transaction.js");
+const Transaction = require("../models/Transaction.js").default;
 const { getMonthYear, monthNames } = require("../config/date.js");
 const {
   incomeCategorie,
