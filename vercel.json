@@ -1,8 +1,3 @@
 {
-  "rewrites": [
-    {
-      "source": "/api/(.*)",
-      "destination": "https://projekt-kapusta-backend.vercel.app/api/$1"
-    }
-  ]
+  "rewrites": [{}]
 }
