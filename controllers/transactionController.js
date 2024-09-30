@@ -1,7 +1,9 @@
-const Transaction = require("../models/Transaction.js").default;
-const { getMonthYear, monthNames } = require("../config/date.js").default;
-const { incomeCategorie, expenseCategorie } =
-  require("../config/categories.js").default;
+const Transaction = require("../models/Transaction.js");
+const { getMonthYear, monthNames } = require("../config/date.js");
+const {
+  incomeCategorie,
+  expenseCategorie,
+} = require("../config/categories.js");
 
 // Dodanie dochodu
 const postIncome = async (req, res, next) => {
